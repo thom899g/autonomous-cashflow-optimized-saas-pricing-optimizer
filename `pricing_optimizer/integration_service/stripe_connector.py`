@@ -1,0 +1,21 @@
+import stripe
+
+class StripeConnector:
+    def __init__(self, api_key):
+        self.client = stripe.Stripe(api_key=api_key, version="2023-08-14")
+
+    def update_subscription_price(self, subscription_id, new_price):
+        try:
+            # Update the price for a subscription
+            subscription = self.client.subscriptions.update(
+                subscription_id,
+                {
+                    "billing_cycles": [{
+                        "active": True,
+                        "price": str(new_price)
+                    }]
+                }
+            )
+            return {"status": "success", "message": "Price updated successfully"}
+        except stripe.error.StripeError as e:
+            return {"status": "error", "message": str(e)}
