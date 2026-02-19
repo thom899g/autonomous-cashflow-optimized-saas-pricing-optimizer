@@ -1,0 +1,9 @@
+import logging
+from functools import wraps
+
+class ErrorHandler:
+    def __init__(self, logger):
+        self.logger = logger
+
+    def handle_errors(self, func):
+        @wraps(func)
